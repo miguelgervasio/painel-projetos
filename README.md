@@ -156,7 +156,7 @@ Prefixo base: `/api/v1/`
 **Erro 400 Bad Request:**
 
 ```json
-{ "erro": "Parâmetros de consulta inválidos" }
+{ "erro": "Parâmetros de consulta inválidos", "mensagem": "Erro teste" }
 ```
 
 - **`GET /projetos/{id}/dashboard`**: Retorna métricas detalhadas de saúde financeira, avanço físico e saldo de um projeto específico.
