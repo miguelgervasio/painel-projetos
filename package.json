@@ -1,0 +1,32 @@
+{
+  "name": "painel-projetos",
+  "version": "1.0.0",
+  "description": "**Painel de Projetos** é uma API REST desenvolvida simulando o back-end do módulo de acompanhamento de saúde financeira e física de projetos, centralizando saldos de horas, alocações e integração/sincronização com o ERP TOTVS RM.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "knex": "node --import tsx ./node_modules/knex/bin/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miguelgervasio/painel-projetos.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/miguelgervasio/painel-projetos/issues"
+  },
+  "homepage": "https://github.com/miguelgervasio/painel-projetos#readme",
+  "dependencies": {
+    "express": "^5.3.0",
+    "knex": "^3.3.0",
+    "sqlite3": "^6.0.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.5",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}

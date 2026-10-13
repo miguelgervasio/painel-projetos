@@ -20,11 +20,16 @@ A **api** foi desenvolvida com o objetivo de centralizar e expor métricas de sa
 
 O projeto conta com **1 endpoint** que lista projetos com o saldo de horas calculado.
 
-**Fonte dos dados →** O RM é a fonte principal, mas o painel busca em um banco próprio que é sincronizado com o banco oficial a cada 30 minutos, visando a performance para casos do sistema RM estar fora do ar ou lento.
+**Fonte dos dados →** O RM é a fonte principal, mas o painel busca em um banco próprio que seria sincronizado com o banco oficial a cada 30 minutos, visando a performance para casos do sistema RM estar fora do ar ou lento.
 
 **Arquitetura →** Front (React) - API/BFF (Node.js) - Banco relacional (PostgreSQL/SQLite) - Camada de integração - TOTVS RM.
 
-A aplicação simula o módulo do portal, permitindo o gerenciamento e consulta de:
+O projeto utiliza o SQLite com suporte a Migrations e Seeds configurados via Knex:
+
+- **Migrations:** Cria a tabela `PROJETO`.
+- **Seeds:** Populam o banco local com **20 projetos fictícios** configurados para simular cenários reais de paginação e filtros.
+
+A aplicação simula o módulo do portal, permitindo a consulta de:
 
 - Projetos e suas respectivas informações
 <!-- - Apontamentos de horas dos analistas
@@ -51,6 +56,7 @@ A sincronização de dados com o ERP seria realizada de forma automática a cada
 - **TypeScript**: Tipagem estática para maior segurança e qualidade no código
 - **Express**: Framework para criação da API REST
 - **SQLite / PostgreSQL**: Banco de dados relacional para armazenamento local e de produção
+- **Knex**: Query builder para integração com o banco de dados
 - **Postman / Insomnia**: Ferramenta utilizada para testar as rotas da API
 <!-- - **node-cron**: Agendador de tarefas para o job de sincronização periódica -->
 
@@ -77,6 +83,8 @@ npm install
 4. Execute as migrations ou inicie a aplicação:
 
 ```bash
+npm run knex migrate:latest
+npm run knex -- seed:run
 npm run dev
 ```
 
@@ -93,7 +101,7 @@ npm run dev
 
 ### Diagrama
 
-![Diagrama de Modelagem do Domínio](./assets/diagrama-er.png)
+![Diagrama de Modelagem do Domínio](./src/assets/diagrama-er.png)
 
 ## Arquitetura da Solução
 
@@ -109,7 +117,7 @@ npm run dev
 
 Um job agendado é executado a cada 30 minutos utilizando o `node-cron` e busca somente as alterações realizadas após o último cursor, os dados são normalizados e gravados via `upsert` no banco. O resultado de cada execução é registrado no `INTEGRACAO_ERP`.
 
-![Diagrama de Arquitetura da Solução](./assets/arquitetura.png)
+![Diagrama de Arquitetura da Solução](./src/assets/arquitetura.png)
 
 ## Design da API
 
@@ -123,23 +131,25 @@ Prefixo base: `/api/v1/`
 
 ```json
 {
-  "data": [
+  [
     {
-      "id": 2,
-      "codigoRM": "RM-002",
-      "nome": "Migração Financeiro",
-      "cliente": { "id": 10, "razaoSocial": "Beta S.A." },
-      "horasVendidas": 200,
-      "horasRealizadas": 190,
-      "saldoHoras": 10,
-      "consumoPercentual": 95.0,
-      "avancoFisico": 55.0,
-      "status": "CRITICO"
+      "id": 14,
+      "codigoRM": "RM-014",
+      "clienteId": 3,
+      "nome": "Implementação LGPD",
+      "horasVendidas": 70,
+      "horasPlanejadas": 70,
+      "avancoFisico": 100,
+      "valorVendido": 10500,
+      "dataInicio": "2026-01-05",
+      "dataFimPrevista": "2026-02-20",
+      "situacao": "CONCLUIDO",
+      "created_at": "2026-10-13 00:44:46",
+      "updated_at": "2026-10-13 00:44:46",
+      "horasRealizadas": 30,
+      "saldoHoras": 40
     }
-  ],
-  "page": 1,
-  "pageSize": 20,
-  "total": 2
+  ]
 }
 ```
 
@@ -246,3 +256,10 @@ _OBS.: Regras avaliadas na ordem: crítico, atenção e saudável._
 ### Automatização e IA
 
 - Relatório semanal enviado por e-mail à coordenação. Os números são calculados pelo sistema (mesmas regras do painel) e a IA redige o texto a partir deles, destacando projetos críticos e mudanças da semana.
+
+### Uso de Ferramentas de IA Generativa
+
+Este projeto contou com o apoio de ferramentas de IA para obter maior produtividade, especificamente para:
+
+- Gerar dados fictícios e variados para os arquivos de _seed_ do banco de dados local.
+- Auxiliar na estruturação e formatação da documentação em Markdown (`README.md`).
