@@ -88,7 +88,7 @@ npm run knex -- seed:run
 npm run dev
 ```
 
-5. Utilize o **Postman** ou **Insomnia** para testar as rotas da API (servidor rodando em `http://localhost:3000`).
+5. Utilize o **Postman** ou **Insomnia** para testar as rotas da API (servidor rodando em `http://localhost:3333`).
 
 ## Modelagem do Domínio
 
